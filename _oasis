@@ -1,0 +1,44 @@
+OASISFormat:      0.3
+OCamlVersion:     >= 4.02.3
+FindlibVersion:   >= 1.3.2
+Name:             ppx_here
+Version:          113.09.00
+Synopsis:         Expands [%here] into its location
+Authors:          Jane Street Group, LLC <opensource@janestreet.com>
+Copyrights:       (C) 2015 Jane Street Group LLC <opensource@janestreet.com>
+Maintainers:      Jane Street Group, LLC <opensource@janestreet.com>
+License:          Apache-2.0
+LicenseFile:      LICENSE.txt
+Homepage:         https://github.com/janestreet/ppx_here
+Plugins:          StdFiles (0.3), DevFiles (0.3), META (0.3)
+XStdFilesAUTHORS: false
+XStdFilesREADME:  false
+BuildTools:       ocamlbuild
+
+Library ppx_here_expander
+  Path:               expander
+  FindlibName:        expander
+  FindlibParent:      ppx_here
+  Modules:            Ppx_here_expander
+  BuildDepends:       compiler-libs,
+                      ppx_core,
+                      ppx_driver,
+                      ppx_tools.metaquot
+
+Library ppx_here
+  Path:               src
+  Pack:               false
+  Modules:            Ppx_here
+  BuildDepends:       compiler-libs,
+                      ppx_core,
+                      ppx_driver,
+                      ppx_here.expander,
+                      ppx_tools.metaquot
+
+Executable ppx
+  Path:               as_ppx
+  MainIs:             ppx.ml
+  Build:              true
+  Install:            false
+  CompiledObject:     byte
+  BuildDepends:       ppx_here, ppx_driver
