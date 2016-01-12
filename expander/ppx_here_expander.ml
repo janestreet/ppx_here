@@ -35,13 +35,21 @@ let get_filename ~fname =
     (* Otherwise, use the absolute [fname] *)
     -> Location.absolute_path fname
 
-let lift_position ~loc p =
+let lift_position ~loc =
   let (module Builder) = Ast_builder.make loc in
   let open Builder in
+  let pos = loc.Location.loc_start in
   let id = Located.lident in
   pexp_record
-    [ id "Lexing.pos_fname" , estring (get_filename ~fname:p.Lexing.pos_fname)
-    ; id "pos_lnum"         , eint    p.Lexing.pos_lnum
-    ; id "pos_cnum"         , eint    p.Lexing.pos_cnum
-    ; id "pos_bol"          , eint    p.Lexing.pos_bol
+    [ id "Lexing.pos_fname" , estring (get_filename ~fname:pos.Lexing.pos_fname)
+    ; id "pos_lnum"         , eint    pos.Lexing.pos_lnum
+    ; id "pos_cnum"         , eint    pos.Lexing.pos_cnum
+    ; id "pos_bol"          , eint    pos.Lexing.pos_bol
     ] None
+
+let lift_position_as_string ~(loc : Location.t) =
+  let { Lexing. pos_fname; pos_lnum; pos_cnum; pos_bol } = loc.loc_start in
+  Ast_builder.Default.estring ~loc
+    (Printf.sprintf "%s:%d:%d" (get_filename ~fname:pos_fname) pos_lnum
+       (pos_cnum - pos_bol))
+;;

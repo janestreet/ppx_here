@@ -1,18 +1,12 @@
 open Ppx_core.Std
 
-let map = object
-  inherit Ast_traverse.map as super
-  method! expression x =
-    match x.pexp_desc with
-    | Pexp_ident { txt = Longident.Lident "_here_"; loc } ->
-      Ppx_here_expander.lift_position ~loc (loc.Location.loc_start)
-    | _ ->
-      super#expression x
-end
+let here =
+  Extension.V2.declare "here" Extension.Context.expression
+    Ast_pattern.(pstr nil)
+    (fun ~loc ~path:_ -> Ppx_here_expander.lift_position ~loc)
+;;
 
 let () =
-  Ppx_driver.register_code_transformation
-    ~name:"here"
-    ~impl:map#structure
-    ~intf:map#signature
+  Ppx_driver.register_transformation "here"
+    ~extensions:[ here ]
 ;;

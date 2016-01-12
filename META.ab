@@ -1,0 +1,26 @@
+version = "$(pkg_version)"
+description = "Expands [%here] into its location"
+requires = "ppx_core ppx_driver ppx_here.expander"
+archive(ppx_driver, byte          ) = "ppx_here.cma"
+archive(ppx_driver, native        ) = "ppx_here.cmxa"
+archive(ppx_driver, native, plugin) = "ppx_here.cmxs"
+exists_if = "ppx_here.cma"
+ppx(-ppx_driver) = "./ppx"
+
+package "expander" (
+  version = "$(pkg_version)"
+  description = "Expander for ppx_here"
+  requires = "ppx_core ppx_driver"
+  archive(byte          ) = "ppx_here_expander.cma"
+  archive(native        ) = "ppx_here_expander.cmxa"
+  archive(native, plugin) = "ppx_here_expander.cmxs"
+  exists_if = "ppx_here_expander.cma"
+
+  package "for_ppx_deriving" (
+    description = "Don't use this directly"
+    error(ppx_driver) = "Cannot use ppx_here.expander.for_ppx_deriving when ppx_driver is set"
+    requires = "ppx_core.for_ppx_deriving ppx_deriving ppx_driver.for_ppx_deriving"
+    exists_if = "ppx_here_expander.cma"
+    ppxopt = "ppx_deriving,./ppx_here_expander.cma"
+  )
+)

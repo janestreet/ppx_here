@@ -1,17 +1,18 @@
-A ppx rewriter that defines an identifier whose value is its source position.
+A ppx rewriter that defines an extension node whose value is its source position.
 
 Syntax
 ------
 
-`ppx_here` rewrites the identifier `_here_` in expressions, by replacing it by a value of
-type `Source_code_position.t` (i.e. `Lexing.position`) corresponding to the current
-position. It respects line number directives.
+`ppx_here` rewrites the extension `[%here]` in expressions, by
+replacing it by a value of type `Source_code_position.t`
+(i.e. `Lexing.position`) corresponding to the current position. It
+respects line number directives.
 
 For instance:
 
 ```ocaml
 let _ =
-  print_endline _here_.Lexing.pos_fname
+  print_endline [%here].Lexing.pos_fname
 ```
 
 becomes:
@@ -22,7 +23,7 @@ let _ =
     {
       Lexing.pos_fname = ppx/ppx_here/test/test.ml";
       pos_lnum = 2;
-      pos_cnum = 24;
+      pos_cnum = 26;
       pos_bol = 8;
     }.Lexing.pos_fname
 ```
@@ -50,5 +51,5 @@ The goal of this behavior is to
 * avoid ambiguity: there are many files called `server.ml`, `common.ml` or `config.ml` in
 a tree
 * when `-dirname` is passed, avoid being overly specific by giving a path that only exists
-on your machine, by allowing the build system to specify where the source file is relative
-to the root of the project
+on your machine, by allowing the build system to specify where the source file is,
+relative to the root of the project

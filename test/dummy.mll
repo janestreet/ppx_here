@@ -1,6 +1,6 @@
 {
-  let _ = _here_
+  let _ = [%here]
 }
 
 rule a = parse
-| _ { ignore (_here_); assert false }
+| _ { ignore ([%here]); assert false }
