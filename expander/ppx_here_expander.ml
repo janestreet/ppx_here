@@ -3,6 +3,8 @@ open Ppx_core.Std
 
 let dirname = ref None
 
+let set_dirname dn = dirname := dn
+
 let () =
   Ppx_driver.add_arg "-dirname"
     (Arg.String (fun s -> dirname := Some s))
