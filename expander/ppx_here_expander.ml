@@ -26,7 +26,7 @@ let correct_fname ~fname =
   | Some fname -> fname
   | None -> fname
 
-let get_filename ~fname =
+let expand_filename fname =
   let fname = correct_fname ~fname in
   match Filename.is_relative fname, !dirname with
   | true, Some dirname ->
@@ -43,7 +43,7 @@ let lift_position ~loc =
   let pos = loc.Location.loc_start in
   let id = Located.lident in
   pexp_record
-    [ id "Lexing.pos_fname" , estring (get_filename ~fname:pos.Lexing.pos_fname)
+    [ id "Lexing.pos_fname" , estring (expand_filename pos.Lexing.pos_fname)
     ; id "pos_lnum"         , eint    pos.Lexing.pos_lnum
     ; id "pos_cnum"         , eint    pos.Lexing.pos_cnum
     ; id "pos_bol"          , eint    pos.Lexing.pos_bol
@@ -52,6 +52,6 @@ let lift_position ~loc =
 let lift_position_as_string ~(loc : Location.t) =
   let { Lexing. pos_fname; pos_lnum; pos_cnum; pos_bol } = loc.loc_start in
   Ast_builder.Default.estring ~loc
-    (Printf.sprintf "%s:%d:%d" (get_filename ~fname:pos_fname) pos_lnum
+    (Printf.sprintf "%s:%d:%d" (expand_filename pos_fname) pos_lnum
        (pos_cnum - pos_bol))
 ;;
