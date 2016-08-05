@@ -1,0 +1,26 @@
+;; This test is designed to check that the pa_here preprocessing is working correctly.
+;; for example that the [_here_.Lexing.pos_fname] in test.ml is correctly expanded
+;; to include the quoted string of the original .ml path
+
+;; This test also ensures that the jenga rule for .pp generation is working
+;; In particular that the output file is ascii text, rather than the
+;; binary-rep of the compiler's internal AST, which can get output by
+;; camlp4o if run in the wrong way..
+;; (wrong for the purpose of .pp generation for human inspection!)
+
+(alias
+ ((name runtest)
+  (deps (dummy.ml.pp))
+  (action "grep -q '\"ppx/ppx_here/test/dummy.mll\"' dummy.ml.pp")))
+
+(alias
+ ((name DEFAULT)
+  (deps (dummy.ml.pp))))
+
+(executables
+ ((names (dummy))
+  (preprocess (((pps (ppx_here)) All)))))
+
+(ocamllex (dummy))
+
+(toplevel_expect_tests ((libraries (ppx_here))))
