@@ -1,6 +1,5 @@
 (library
  ((name ppx_here_expander)
   (public_name ppx_here.expander)
-  (wrapped false)
-  (libraries (ocamlcommon ppx_driver ppx_core))
-  (preprocess ((no_preprocessing All)))))
+  (libraries (compiler-libs.common ppx_driver ppx_core))
+  (preprocess no_preprocessing)))

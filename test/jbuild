@@ -1,4 +1,4 @@
-;; This test is designed to check that the pa_here preprocessing is working correctly.
+;; This test is designed to check that the ppx_here preprocessing is working correctly.
 ;; for example that the [_here_.Lexing.pos_fname] in test.ml is correctly expanded
 ;; to include the quoted string of the original .ml path
 
@@ -19,7 +19,7 @@
 
 (executables
  ((names (dummy))
-  (preprocess (((pps (ppx_here)) All)))))
+  (preprocess (pps (ppx_here)))))
 
 (ocamllex (dummy))
 
