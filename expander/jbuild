@@ -1,5 +1,5 @@
 (library
  ((name ppx_here_expander)
   (public_name ppx_here.expander)
-  (libraries (compiler-libs.common ppx_driver ppx_core))
+  (libraries (ppx_driver ppx_core))
   (preprocess no_preprocessing)))

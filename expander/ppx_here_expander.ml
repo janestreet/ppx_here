@@ -1,5 +1,6 @@
-open StdLabels
-open Ppx_core.Std
+open Ppx_core
+
+module Filename = Caml.Filename
 
 let dirname = ref None
 
@@ -7,24 +8,28 @@ let set_dirname dn = dirname := dn
 
 let () =
   Ppx_driver.add_arg "-dirname"
-    (Arg.String (fun s -> dirname := Some s))
+    (String (fun s -> dirname := Some s))
     ~doc:"<dir> Name of the current directory relative to the root of the project"
 
-let is_prefix ~prefix x =
-  let prefix_len = String.length prefix in
-  String.length x >= prefix_len && prefix = String.sub x ~pos:0 ~len:prefix_len
-
-let chop_prefix ~prefix x =
-  if is_prefix ~prefix x then
-    let prefix_len = String.length prefix in
-    Some (String.sub x ~pos:prefix_len ~len:(String.length x - prefix_len))
-  else
-    None
-
 let correct_fname ~fname =
-  match chop_prefix ~prefix:"./" fname with
+  match String.chop_prefix ~prefix:"./" fname with
   | Some fname -> fname
   | None -> fname
+
+(* Copy&pasted from location.ml in the OCaml sources *)
+let absolute_path s = (* This function could go into Filename *)
+  let open Filename in
+  let s = if is_relative s then concat (Caml.Sys.getcwd ()) s else s in
+  (* Now simplify . and .. components *)
+  let rec aux s =
+    let base = basename s in
+    let dir = dirname s in
+    if String.equal dir s then dir
+    else if String.equal base current_dir_name then aux dir
+    else if String.equal base parent_dir_name then dirname (aux dir)
+    else concat (aux dir) base
+  in
+  aux s
 
 let expand_filename fname =
   let fname = correct_fname ~fname in
@@ -35,7 +40,7 @@ let expand_filename fname =
   | true, None
   | false, _
     (* Otherwise, use the absolute [fname] *)
-    -> Location.absolute_path fname
+    -> absolute_path fname
 
 let lift_position ~loc =
   let (module Builder) = Ast_builder.make loc in

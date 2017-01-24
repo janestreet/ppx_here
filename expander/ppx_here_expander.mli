@@ -1,3 +1,4 @@
+open Ppx_core
 
 (** Lift a lexing position to a expression *)
 val lift_position : loc:Location.t -> Parsetree.expression

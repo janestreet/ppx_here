@@ -2,5 +2,5 @@
  ((name ppx_here)
   (public_name ppx_here)
   (kind ppx_rewriter)
-  (libraries (compiler-libs.common ppx_driver ppx_core ppx_here_expander))
+  (libraries (ppx_driver ppx_core ppx_here_expander))
   (preprocess no_preprocessing)))

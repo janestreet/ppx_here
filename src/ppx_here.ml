@@ -1,4 +1,4 @@
-open Ppx_core.Std
+open Ppx_core
 
 let here =
   Extension.declare "here" Extension.Context.expression
