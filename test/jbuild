@@ -18,6 +18,5 @@
 
 (ocamllex (dummy))
 
-(toplevel_expect_tests ((libraries (ppx_here))))
 
 (jbuild_version jane_street)
