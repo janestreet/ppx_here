@@ -14,7 +14,7 @@
 
 (executables
  ((names (dummy))
-  (preprocess (pps (ppx_here)))))
+  (preprocess (pps (ppx_here ppx_driver.runner)))))
 
 (ocamllex (dummy))
 
