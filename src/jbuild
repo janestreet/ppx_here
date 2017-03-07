@@ -5,4 +5,4 @@
   (libraries (ppx_driver ppx_core ppx_here_expander))
   (preprocess no_preprocessing)))
 
-(jbuild_version jane_street)
+(jbuild_version 1)
