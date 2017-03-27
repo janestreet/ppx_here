@@ -2,6 +2,9 @@
  ((name ppx_here_expander)
   (public_name ppx_here.expander)
   (libraries (ppx_driver ppx_core))
+  ;; This library defines a ppx_driver command line argument, so we must
+  ;; always link it
+  (library_flags (-linkall))
   (preprocess no_preprocessing)))
 
 (jbuild_version 1)
