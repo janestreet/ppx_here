@@ -46,15 +46,11 @@ complicated control flow).
 Command line flag
 -----------------
 
-If the filename given to the compiler (or overriden by line directive) is a relative path,
-then `ppx_here` rewrites it into an absolute path, unless a flag `-dirname root` is given,
-in which case relative filenames are made relative to that `root` filename instead. `root`
-can be a relative path.
+If the flag `-dirname <dir>` is given, relative filenames are made
+relative to `<dir>`. `<dir>` can be a relative path.
 
-The goal of this behavior is to
+`<dir>` can be chosen as the path from the root of the repository to
+the directory of the source, to make filenames unique within the
+repository (which avoids ambiguities as there can be many files called
+`server.ml`, `common.ml` or `config.ml`).
 
-* avoid ambiguity: there are many files called `server.ml`, `common.ml` or `config.ml` in
-a tree
-* when `-dirname` is passed, avoid being overly specific by giving a path that only exists
-on your machine, by allowing the build system to specify where the source file is,
-relative to the root of the project

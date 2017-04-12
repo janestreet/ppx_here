@@ -11,36 +11,17 @@ let () =
     (String (fun s -> dirname := Some s))
     ~doc:"<dir> Name of the current directory relative to the root of the project"
 
-let correct_fname ~fname =
+let chop_dot_slash_prefix ~fname =
   match String.chop_prefix ~prefix:"./" fname with
   | Some fname -> fname
   | None -> fname
 
-(* Copy&pasted from location.ml in the OCaml sources *)
-let absolute_path s = (* This function could go into Filename *)
-  let open Filename in
-  let s = if is_relative s then concat (Caml.Sys.getcwd ()) s else s in
-  (* Now simplify . and .. components *)
-  let rec aux s =
-    let base = basename s in
-    let dir = dirname s in
-    if String.equal dir s then dir
-    else if String.equal base current_dir_name then aux dir
-    else if String.equal base parent_dir_name then dirname (aux dir)
-    else concat (aux dir) base
-  in
-  aux s
-
 let expand_filename fname =
-  let fname = correct_fname ~fname in
   match Filename.is_relative fname, !dirname with
   | true, Some dirname ->
     (* If [dirname] is given and [fname] is relative, then prepend [dirname]. *)
-    Filename.concat dirname fname
-  | true, None
-  | false, _
-    (* Otherwise, use the absolute [fname] *)
-    -> absolute_path fname
+    Filename.concat dirname (chop_dot_slash_prefix ~fname)
+  | _ -> fname
 
 let lift_position ~loc =
   let (module Builder) = Ast_builder.make loc in
