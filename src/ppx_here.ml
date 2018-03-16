@@ -1,4 +1,4 @@
-open Ppx_core
+open Ppxlib
 
 let here =
   Extension.declare "here" Extension.Context.expression
@@ -7,6 +7,6 @@ let here =
 ;;
 
 let () =
-  Ppx_driver.register_transformation "here"
+  Driver.register_transformation "here"
     ~extensions:[ here ]
 ;;

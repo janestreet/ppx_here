@@ -15,7 +15,7 @@
 (executables
  ((names (dummy))
   (flags (:standard -safe-string))
-  (preprocess (pps (ppx_here ppx_driver.runner)))))
+  (preprocess (pps (ppx_here ppxlib.runner)))))
 
 (ocamllex (dummy))
 

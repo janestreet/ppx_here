@@ -2,7 +2,7 @@
  ((name ppx_here_expander)
   (public_name ppx_here.expander)
   (flags (:standard -safe-string))
-  (libraries (ppx_driver ppx_core))
+  (libraries (base ppxlib))
   (preprocess no_preprocessing)))
 
 

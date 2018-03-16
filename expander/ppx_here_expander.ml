@@ -1,4 +1,4 @@
-open Ppx_core
+open Ppxlib
 
 module Filename = Caml.Filename
 
@@ -7,12 +7,12 @@ let dirname = ref None
 let set_dirname dn = dirname := dn
 
 let () =
-  Ppx_driver.add_arg "-dirname"
+  Driver.add_arg "-dirname"
     (String (fun s -> dirname := Some s))
     ~doc:"<dir> Name of the current directory relative to the root of the project"
 
 let chop_dot_slash_prefix ~fname =
-  match String.chop_prefix ~prefix:"./" fname with
+  match Base.String.chop_prefix ~prefix:"./" fname with
   | Some fname -> fname
   | None -> fname
 
