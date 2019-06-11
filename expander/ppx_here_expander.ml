@@ -29,7 +29,7 @@ let lift_position ~loc =
   let pos = loc.Location.loc_start in
   let id = Located.lident in
   pexp_record
-    [ id "Lexing.pos_fname" , estring (expand_filename pos.Lexing.pos_fname)
+    [ id "Ppx_here_lib.pos_fname" , estring (expand_filename pos.Lexing.pos_fname)
     ; id "pos_lnum"         , eint    pos.Lexing.pos_lnum
     ; id "pos_cnum"         , eint    pos.Lexing.pos_cnum
     ; id "pos_bol"          , eint    pos.Lexing.pos_bol
