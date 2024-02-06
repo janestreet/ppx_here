@@ -1,2 +1,4 @@
-(library (name ppx_here_lib) (public_name ppx_here.runtime-lib)
+(library
+ (name ppx_here_lib)
+ (public_name ppx_here.runtime-lib)
  (preprocess no_preprocessing))
