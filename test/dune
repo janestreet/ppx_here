@@ -1,8 +1,8 @@
 (rule
- (alias runtest)
  (deps dummy.ml.pp)
  (action
-  (bash "grep -q '\"ppx/ppx_here/test/dummy.mll\"' dummy.ml.pp")))
+  (bash "grep -q '\"ppx/ppx_here/test/dummy.mll\"' dummy.ml.pp"))
+ (alias runtest))
 
 (alias
  (name DEFAULT)
