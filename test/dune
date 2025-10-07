@@ -5,7 +5,7 @@
  (alias runtest))
 
 (alias
- (name DEFAULT)
+ (name default)
  (deps dummy.ml.pp))
 
 (executables
