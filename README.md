@@ -24,7 +24,7 @@ becomes:
 let _ =
   print_endline
     {
-      Lexing.pos_fname = ppx/ppx_here/test/test.ml";
+      Lexing.pos_fname = "ppx/ppx_here/test/test.ml";
       pos_lnum = 2;
       pos_cnum = 26;
       pos_bol = 8;
