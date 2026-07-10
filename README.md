@@ -1,7 +1,7 @@
 ppx_here
 ========
 
-A ppx rewriter that defines an extension node whose value is its source position.
+A ppx rewriter that defines extension nodes whose values are source positions.
 
 Syntax
 ------
@@ -30,6 +30,18 @@ let _ =
       pos_bol = 8;
     }.Lexing.pos_fname
 ```
+
+The extension `let%with_pos` emits a companion value with the source position of a let binding.
+
+For instance:
+
+```ocaml
+let%with_pos foo = ...
+```
+
+defines the value `foo__pos` equal to the position of `foo`.
+
+See `test/test_ppx_here_expander.ml` for more examples.
 
 Usage
 -----

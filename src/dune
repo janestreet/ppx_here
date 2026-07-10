@@ -2,5 +2,5 @@
  (name ppx_here)
  (public_name ppx_here)
  (kind ppx_rewriter)
- (libraries ppxlib ppx_here_expander)
+ (libraries ppx_here_expander ppxlib)
  (preprocess no_preprocessing))

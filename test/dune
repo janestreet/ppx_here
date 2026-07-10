@@ -4,6 +4,13 @@
   (bash "grep -q '\"ppx/ppx_here/test/dummy.mll\"' dummy.ml.pp"))
  (alias runtest))
 
+(rule
+ (deps dummy.ml.pp)
+ (action
+  (bash
+    "grep -q 'let foo__pos =' dummy.ml.pp && grep -A5 'let foo__pos =' dummy.ml.pp | grep -q '\"ppx/ppx_here/test/dummy.mll\"'"))
+ (alias runtest))
+
 (alias
  (name default)
  (deps dummy.ml.pp))
@@ -11,7 +18,15 @@
 (executables
  (modes byte exe)
  (names dummy)
+ (modules dummy)
  (preprocess
   (pps ppx_here)))
 
 (ocamllex dummy)
+
+(library
+ (name ppx_here_test)
+ (modules ppx_here_test test_ppx_here_expander)
+ (libraries)
+ (preprocess
+  (pps ppx_disable_unused_warnings ppx_here)))
