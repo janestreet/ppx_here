@@ -1,9 +1,55 @@
 (* -*- tuareg -*- *)
-#verbose true;;
+#verbose true
 
-[%here]
-[%%expect{|
-- : lexing_position =
-{Ppx_here_lib.pos_fname = "ppx/ppx_here/test/test-location.mlt";
- pos_lnum = 4; pos_bol = 38; pos_cnum = 38}
+let _ =
+  let%with_pos rec foo = 0 in
+  foo, foo__pos
+;;
+
+[%%expect
+  {|
+Line _, characters _-_:
+Error: [let%with_pos] cannot be recursive
+|}]
+
+let _ =
+  let%with_pos mutable foo = 0 in
+  foo, foo__pos
+;;
+
+[%%expect
+  {|
+Line _, characters _-_:
+Error: [let%with_pos] cannot be mutable
+|}]
+
+let _ =
+  let%with_pos foo = 0
+  and bar = 1 in
+  foo, bar, foo__pos
+;;
+
+[%%expect
+  {|
+Line _, characters _-_:
+Error: [let%with_pos] requires exactly one binding
+|}]
+
+let _ = [%with_pos 0]
+
+[%%expect
+  {|
+Line _, characters _-_:
+Error: [%with_pos] can only be used with let bindings
+|}]
+
+let _ =
+  let%with_pos foo, bar = 0, 1 in
+  foo, bar
+;;
+
+[%%expect
+  {|
+Line _, characters _-_:
+Error: [let%with_pos] is only supported on simple value names
 |}]
