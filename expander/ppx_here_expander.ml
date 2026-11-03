@@ -12,7 +12,7 @@ let () =
 ;;
 
 let chop_dot_slash_prefix ~fname =
-  match Base.String.chop_prefix ~prefix:"./" fname with
+  match Ppx_helpers.Base_lite.String.chop_prefix ~prefix:"./" fname with
   | Some fname -> fname
   | None -> fname
 ;;
